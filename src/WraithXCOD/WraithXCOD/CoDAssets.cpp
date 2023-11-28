@@ -484,28 +484,43 @@ const std::vector<CoDGameProcess> CoDAssets::GameProcessInfo =
     // Black Ops 4
     { "blackops4.exe", SupportedGames::BlackOps4, SupportedGameFlags::SP },
     // Black Ops CW
-//    { "blackopscoldwar.exe", SupportedGames::BlackOpsCW, SupportedGameFlags::SP },
+    { "blackopscoldwar.exe", SupportedGames::BlackOpsCW, SupportedGameFlags::SP },
     // Modern Warfare
     { "iw3sp.exe", SupportedGames::ModernWarfare, SupportedGameFlags::SP },
+    { "iw3sp_mod.exe", SupportedGames::ModernWarfare, SupportedGameFlags::SP },
     { "iw3mp.exe", SupportedGames::ModernWarfare, SupportedGameFlags::MP },
+    { "iw3xo.exe", SupportedGames::ModernWarfare, SupportedGameFlags::MP },
     // Modern Warfare 2
     { "iw4sp.exe", SupportedGames::ModernWarfare2, SupportedGameFlags::SP },
+    { "iw4-sp.exe", SupportedGames::ModernWarfare2, SupportedGameFlags::SP },
     { "iw4mp.exe", SupportedGames::ModernWarfare2, SupportedGameFlags::MP },
+    { "iw4x.exe",  SupportedGames::ModernWarfare2, SupportedGameFlags::MP },
+    { "M2.exe",  SupportedGames::ModernWarfare2, SupportedGameFlags::SP },
     // Modern Warfare 3
     { "iw5sp.exe", SupportedGames::ModernWarfare3, SupportedGameFlags::SP },
+    { "iw5-mod.exe", SupportedGames::ModernWarfare3, SupportedGameFlags::SP },
     { "iw5mp.exe", SupportedGames::ModernWarfare3, SupportedGameFlags::MP },
     // Ghosts
     { "iw6sp64_ship.exe", SupportedGames::Ghosts, SupportedGameFlags::SP },
+    { "iw6-mod.exe", SupportedGames::Ghosts, SupportedGameFlags::SP },
     { "iw6mp64_ship.exe", SupportedGames::Ghosts, SupportedGameFlags::MP },
+    { "iw6-mod.exe", SupportedGames::Ghosts, SupportedGameFlags::MP },
     // Advanced Warfare
     { "s1_sp64_ship.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::SP },
+    { "s1-mod.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::SP },
     { "s1_mp64_ship.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::MP },
+    { "s1-mod.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::MP },
     // Modern Warfare Remastered
     { "h1_sp64_ship.exe", SupportedGames::ModernWarfareRemastered, SupportedGameFlags::SP },
+    { "h1-mod.exe", SupportedGames::ModernWarfareRemastered, SupportedGameFlags::SP },
     { "h1_mp64_ship.exe", SupportedGames::ModernWarfareRemastered, SupportedGameFlags::MP },
+    { "h1-mod.exe", SupportedGames::ModernWarfareRemastered, SupportedGameFlags::MP },
     // Infinite Warfare
     { "iw7_ship.exe", SupportedGames::InfiniteWarfare, SupportedGameFlags::SP },
+    { "iw7-mod.exe", SupportedGames::InfiniteWarfare, SupportedGameFlags::SP },
     // World War II
+    { "s2_sp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::SP },
+    { "s2_mp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::MP },
     { "s2_sp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::SP },
     { "s2_mp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::MP },
     // Modern Warfare 4
@@ -1713,7 +1728,7 @@ ExportGameResult CoDAssets::ExportModelAsset(const CoDModel_t* Model, const std:
                     auto Result = CoDXModelTranslator::TranslateXModel(GenericModel, BiggestLodIndex);
 
                     // Apply lod name (_LOD0)
-                    Result->AssetName += "_LOD0";
+                    Result->AssetName += "";
 
                     // Check result and export
                     if (Result != nullptr)
@@ -1788,6 +1803,8 @@ ExportGameResult CoDAssets::ExportImageAsset(const CoDImage_t* Image, const std:
             case SupportedGames::WorldAtWar:
             case SupportedGames::ModernWarfare:
             case SupportedGames::ModernWarfare2:
+                ImageData = IWDSupport::ReadImageFile(Image);
+                break;
             case SupportedGames::ModernWarfare3:
             case SupportedGames::BlackOps:
                 ImageData = IWDSupport::ReadImageFile(Image);
