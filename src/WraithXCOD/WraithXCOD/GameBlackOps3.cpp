@@ -618,7 +618,7 @@ const XMaterial_t GameBlackOps3::ReadXMaterial(uint64_t MaterialPointer)
         }
 
         // Assign the new image
-        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.ImagePtr, ImageName);
+        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, 0, 0, ImageInfo.ImagePtr, ImageName);
 
         // Advance
         MaterialData.ImageTablePtr += sizeof(BO3XMaterialImage);
