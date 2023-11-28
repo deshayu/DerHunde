@@ -580,7 +580,7 @@ std::unique_ptr<XImageDDS> GameBlackOps3::ReadXImage(const CoDImage_t* Image)
     }
 
     // Proxy off
-    return LoadXImage(XImage_t(Usage, 0, Image->AssetPointer, Image->AssetName));
+    return LoadXImage(XImage_t(Usage, 0, 0, 0, Image->AssetPointer, Image->AssetName));
 }
 
 const XMaterial_t GameBlackOps3::ReadXMaterial(uint64_t MaterialPointer)
