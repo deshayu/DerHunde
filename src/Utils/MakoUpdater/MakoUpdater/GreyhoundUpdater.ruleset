@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for GreyhoundUpdater" Description="Code analysis rules for GreyhoundUpdater.csproj." ToolsVersion="16.0">
+<RuleSet Name="Rules for makoUpdater" Description="Code analysis rules for makoUpdater.csproj." ToolsVersion="16.0">
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
     <Rule Id="AD0001" Action="None" />
     <Rule Id="CS0078" Action="None" />

@@ -115,6 +115,9 @@ std::vector<uint64_t> CoDAssets::GameOffsetInfos = std::vector<uint64_t>();
 // Set game sizes
 std::vector<uint32_t> CoDAssets::GamePoolSizes = std::vector<uint32_t>();
 
+// Set reader
+std::unique_ptr<CoDGDTProcessor> CoDAssets::GameGDTProcessor = std::make_unique<CoDGDTProcessor>();
+
 // Set loaded assets
 std::unique_ptr<AssetPool> CoDAssets::GameAssets = nullptr;
 // Set cache
@@ -782,6 +785,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             CDNDownloader     = CDNSupport ? std::make_unique<CoDCDNDownloaderV1>() : nullptr;
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
             OnDemandCache->LoadPackageCacheAsync(FileSystems::CombinePath(ps::state->GameDirectory, "xpak_cache"));
+            GameGDTProcessor->SetupProcessor("VG");
             Success = GameVanguard::LoadAssets();
             break;
         // Modern Warfare Remastered
@@ -792,6 +796,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             GameStringHandler = GameModernWarfareRM::LoadStringEntry;
             GamePackageCache  = std::make_unique<PAKCache>();
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
+            GameGDTProcessor->SetupProcessor("MWR");
             Success = GameModernWarfareRM::LoadAssetsPS();
             break;
         // Advanced Warfare
@@ -802,6 +807,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             GameStringHandler = GameAdvancedWarfare::LoadStringEntry;
             GamePackageCache  = std::make_unique<PAKCache>();
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
+            GameGDTProcessor->SetupProcessor("AW");
             Success = GameAdvancedWarfare::LoadAssetsPS();
             break;
         // Infinite Warfare
@@ -812,6 +818,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             GameStringHandler = GameInfiniteWarfare::LoadStringEntry;
             GamePackageCache = std::make_unique<PAKCache>();
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
+            GameGDTProcessor->SetupProcessor("IW");
             Success = GameInfiniteWarfare::LoadAssetsPS();
             break;
         // Modern Warfare 2 Remastered
@@ -822,6 +829,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             GameStringHandler = GameModernWarfare2RM::LoadStringEntry;
             GamePackageCache = std::make_unique<PAKCache>();
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
+            GameGDTProcessor->SetupProcessor("IW");
             Success = GameModernWarfare2RM::LoadAssetsPS();
             break;
         // Modern Warfare 2 (2022)
@@ -1121,6 +1129,9 @@ bool CoDAssets::LocateGameInfo()
 {
     // Whether or not we found what we need
     bool Success = false;
+    
+    // GDTShorthand
+    auto GDTShorthand = "WAW";
 
     // Attempt to find the loaded game's offsets, either via DB or heuristics
     // Also, apply proper handlers for various game read functions (Non-inlinable functions only)
@@ -1129,6 +1140,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::QuantumSolace:
         // Load game offset info
         Success = GameQuantumSolace::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "QS";
         // Set game ximage handler
         GameXImageHandler = GameQuantumSolace::LoadXImage;
         // Set game string handler
@@ -1137,6 +1150,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::WorldAtWar:
         // Load game offset info
         Success = GameWorldAtWar::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "WAW";
         // Set game ximage handler
         GameXImageHandler = GameWorldAtWar::LoadXImage;
         // Set game string handler
@@ -1149,6 +1164,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::BlackOps:
         // Load game offset info
         Success = GameBlackOps::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "BO1";
         // Set game ximage handler
         GameXImageHandler = GameBlackOps::LoadXImage;
         // Set game string handler
@@ -1161,6 +1178,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::BlackOps2:
         // Load game offset info
         Success = GameBlackOps2::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "BO2";
         // Set game ximage handler
         GameXImageHandler = GameBlackOps2::LoadXImage;
         // Set game string handler
@@ -1173,6 +1192,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::BlackOps3:
         // Load game offset info
         Success = GameBlackOps3::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "BO3";
         // Set game ximage handler
         GameXImageHandler = GameBlackOps3::LoadXImage;
         // Set game string handler
@@ -1188,6 +1209,8 @@ bool CoDAssets::LocateGameInfo()
         GameBlackOps4::PerformInitialSetup();
         // Load game offset info
         Success = GameBlackOps4::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "BO4";
         // Set game ximage handler
         GameXImageHandler = GameBlackOps4::LoadXImage;
         // Set game string handler
@@ -1200,6 +1223,8 @@ bool CoDAssets::LocateGameInfo()
         GameBlackOpsCW::PerformInitialSetup();
         // Load game offset info
         Success = GameBlackOpsCW::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "BOCW";
         // Set game ximage handler
         GameXImageHandler = GameBlackOpsCW::LoadXImage;
         // Set game string handler
@@ -1209,6 +1234,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::ModernWarfare:
         // Load game offset info
         Success = GameModernWarfare::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "MW";
         // Set game ximage handler
         GameXImageHandler = GameModernWarfare::LoadXImage;
         // Set game string handler
@@ -1221,6 +1248,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::ModernWarfare2:
         // Load game offset info
         Success = GameModernWarfare2::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "MW2";
         // Set game ximage handler
         GameXImageHandler = GameModernWarfare2::LoadXImage;
         // Set game string handler
@@ -1233,6 +1262,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::ModernWarfare3:
         // Load game offset info
         Success = GameModernWarfare3::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "MW3";
         // Set game ximage handler
         GameXImageHandler = GameModernWarfare3::LoadXImage;
         // Set game string handler
@@ -1245,6 +1276,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::Ghosts:
         // Load game offset info
         Success = GameGhosts::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "Ghosts";
         // Set game ximage handler
         GameXImageHandler = GameGhosts::LoadXImage;
         // Set game string handler
@@ -1257,6 +1290,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::AdvancedWarfare:
         // Load game offset info
         Success = GameAdvancedWarfare::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "AW";
         // Set game ximage handler
         GameXImageHandler = GameAdvancedWarfare::LoadXImage;
         // Set game string handler
@@ -1269,6 +1304,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::ModernWarfareRemastered:
         // Load game offset info
         Success = GameModernWarfareRM::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "MWR";
         // Set game ximage handler
         GameXImageHandler = GameModernWarfareRM::LoadXImage;
         // Set game string handler
@@ -1281,6 +1318,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::ModernWarfare2Remastered:
         // Load game offset info
         Success = GameModernWarfare2RM::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "MW2R";
         // Set game ximage handler
         GameXImageHandler = GameModernWarfare2RM::LoadXImage;
         // Set game string handler
@@ -1293,6 +1332,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::InfiniteWarfare:
         // Load game offset info
         Success = GameInfiniteWarfare::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "IW";
         // Set game ximage handler
         GameXImageHandler = GameInfiniteWarfare::LoadXImage;
         // Set game string handler
@@ -1305,6 +1346,8 @@ bool CoDAssets::LocateGameInfo()
     case SupportedGames::WorldWar2:
         // Load game offset info
         Success = GameWorldWar2::LoadOffsets();
+        // Set shorthand
+        GDTShorthand = "WWII";
         // Set game ximage handler
         GameXImageHandler = GameWorldWar2::LoadXImage;
         // Set game string handler
@@ -1327,6 +1370,9 @@ bool CoDAssets::LocateGameInfo()
         // Don't Check Offsets or Set up GDT until below
         return Success;
     }
+    
+    // Setup the game's cache
+    GameGDTProcessor->SetupProcessor(GDTShorthand);
 
     // Validate the results, every game should have at least 1 offset and 1 size, and success must be true
     if (Success && (GameOffsetInfos.size() > 0 && GamePoolSizes.size() > 0))
@@ -2177,7 +2223,10 @@ void CoDAssets::ExportWraithModel(const std::unique_ptr<WraithModel>& Model, con
         // Export an FBX file
         // FBX::ExportFBX(*Model.get(), FileSystems::CombinePath(ExportPath, Model->AssetName + ".fbx"));
     }
+// Prepare GDT info
+    CoDAssets::GameGDTProcessor->ProcessModelGDT(Model);
 }
+
 
 void CoDAssets::CleanupPackageCache()
 {

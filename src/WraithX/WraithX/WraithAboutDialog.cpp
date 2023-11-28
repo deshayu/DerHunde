@@ -67,5 +67,5 @@ void WraithAboutDialog::OnOkClick()
 void WraithAboutDialog::OnGithubClick()
 {
     // Open the Github url
-    ShellExecuteA(NULL, "open", "https://github.com/Scobalula/Greyhound", NULL, NULL, SW_SHOWNORMAL);
+    ShellExecuteA(NULL, "open", "https://github.com/deshayu/Mako", NULL, NULL, SW_SHOWNORMAL);
 }

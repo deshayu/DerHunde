@@ -38,11 +38,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <TargetName>Greyhound</TargetName>
+    <TargetName>Mako</TargetName>
     <LibraryPath>..\..\External\CascLib\bin\CascLib\x64\DebugUD;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <TargetName>Greyhound</TargetName>
+    <TargetName>Mako</TargetName>
     <LibraryPath>..\..\External\CascLib\bin\CascLib\x64\ReleaseUD;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -139,6 +139,7 @@
     <ClCompile Include="GameVanguard.cpp" />
     <ClCompile Include="GameWorldAtWar.cpp" />
     <ClCompile Include="GameWorldWar2.cpp" />
+    <ClCompile Include="GDTSettings.cpp" />
     <ClCompile Include="GeneralSettings.cpp" />
     <ClCompile Include="ImageSettings.cpp" />
     <ClCompile Include="IPAKCache.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="GameVanguard.h" />
     <ClInclude Include="GameWorldAtWar.h" />
     <ClInclude Include="GameWorldWar2.h" />
+    <ClInclude Include="GDTSettings.h" />
     <ClInclude Include="GeneralSettings.h" />
     <ClInclude Include="ImageSettings.h" />
     <ClInclude Include="IPAKCache.h" />
@@ -248,7 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\WraithX\Resources\CheckMarkIcon.ico" />
-    <Image Include="..\Resources\Greyhound2023.ico" />
+    <Image Include="..\Resources\mako2023.ico" />
     <Image Include="..\Resources\SettingHover.png" />
     <Image Include="..\Resources\SettingNormal.png" />
     <Image Include="..\Resources\SettingSelect.png" />

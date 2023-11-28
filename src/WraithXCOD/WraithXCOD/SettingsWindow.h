@@ -29,6 +29,7 @@ private:
     void OnAnimsPage();
     void OnImagesPage();
     void OnSoundsPage();
+    void OnGDTPage();
 
     // Helper for disabling all controls
     void SetUnselected();
@@ -42,6 +43,7 @@ protected:
     WraithSettingButton AnimButton;
     WraithSettingButton ImageButton;
     WraithSettingButton SoundButton;
+    WraithSettingButton GDTButton;
 
     // The current settings panel
     std::unique_ptr<WraithWindow> SettingsPanel;

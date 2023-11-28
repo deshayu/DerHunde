@@ -15,6 +15,7 @@
 #include "CoDAssetType.h"
 #include "CoDPackageCache.h"
 #include "CoDXConverter.h"
+#include "CoDGDTProcessor.h"
 #include "CoDCDNCache.h"
 #include "CoDCDNDownloader.h"
 
@@ -173,6 +174,9 @@ public:
     static std::vector<uint64_t> GameOffsetInfos;
     // A list of game pool sizes, varies per-game
     static std::vector<uint32_t> GamePoolSizes;
+
+    // A GDT processor for this game
+    static std::unique_ptr<CoDGDTProcessor> GameGDTProcessor;
 
     // -- Loading and cleanup functions
 

@@ -13,6 +13,7 @@
 #include "AnimSettings.h"
 #include "ImageSettings.h"
 #include "SoundSettings.h"
+#include "GDTSettings.h"
 
 // We need the following Wraith classes
 #include "Strings.h"
@@ -24,6 +25,7 @@ BEGIN_MESSAGE_MAP(SettingsWindow, WraithWindow)
     ON_COMMAND(IDC_ANIMPANEL, OnAnimsPage)
     ON_COMMAND(IDC_IMAGEPANEL, OnImagesPage)
     ON_COMMAND(IDC_SOUNDPANEL, OnSoundsPage)
+    ON_COMMAND(IDC_GDTPANEL, OnGDTPage)
 END_MESSAGE_MAP()
 
 void SettingsWindow::DoDataExchange(CDataExchange* pDX)
@@ -36,6 +38,7 @@ void SettingsWindow::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_ANIMPANEL, AnimButton);
     DDX_Control(pDX, IDC_IMAGEPANEL, ImageButton);
     DDX_Control(pDX, IDC_SOUNDPANEL, SoundButton);
+    DDX_Control(pDX, IDC_GDTPANEL, GDTButton);
 }
 
 void SettingsWindow::OnBeforeLoad()
@@ -46,6 +49,7 @@ void SettingsWindow::OnBeforeLoad()
 
     // Adjust controls
     ShiftControl(IDC_SOUNDPANEL, CRect(0, -1, 0, 0));
+    ShiftControl(IDC_GDTPANEL, CRect(0, -1, 0, 0));
 }
 
 void SettingsWindow::OnLoad()
@@ -87,6 +91,7 @@ void SettingsWindow::SetUnselected()
     this->AnimButton.SetSelectedState(false);
     this->ImageButton.SetSelectedState(false);
     this->SoundButton.SetSelectedState(false);
+    this->GDTButton.SetSelectedState(false);
 }
 
 void SettingsWindow::OnGeneralPage()
@@ -207,4 +212,30 @@ void SettingsWindow::OnSoundsPage()
 
     this->SetUnselected();
     this->SoundButton.SetSelectedState(true);
+    }
+}
+
+void SettingsWindow::OnGDTPage()
+{
+    // Clean up current
+    if (SettingsPanel != nullptr)
+    {
+        SettingsPanel->DestroyWindow();
+        SettingsPanel.reset();
+    }
+
+    // -- Models
+
+    CRect Size;
+    // Fetch
+    this->GetClientRect(&Size);
+
+    SettingsPanel = std::make_unique<GDTSettings>();
+    SettingsPanel->Create(IDD_GDTSETTINGS, this);
+    SettingsPanel->MoveWindow(176, 0, Size.right - 177, Size.bottom);
+    SettingsPanel->ShowWindow(SW_SHOW);
+
+    this->SetUnselected();
+    this->GDTButton.SetSelectedState(true);
+
 }

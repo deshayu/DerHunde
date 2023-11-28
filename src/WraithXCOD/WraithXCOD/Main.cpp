@@ -111,10 +111,10 @@ static void CleanupFilesystem()
 
 LONG WINAPI MyUnhandledExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
 {
-    MessageBoxA(NULL, "Greyhound has encountered a fatal error and must close.\n\nA dump file will be written to where Greyhound's exe is located, please provide this and as much information as you can when reporting this crash.", "Greyhound", MB_OK | MB_ICONERROR);
+    MessageBoxA(NULL, "Mako has encountered a fatal error and must close.\n\nA dump file will be written to where Mako's exe is located, please provide this and as much information as you can when reporting this crash.", "Mako", MB_OK | MB_ICONERROR);
     
     HANDLE hFile = CreateFile(
-        L"crash_dump.dmp",
+        L"mako_dump.dmp",
         GENERIC_READ | GENERIC_WRITE,
         FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
         NULL,
@@ -157,13 +157,13 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     spdlog::flush_every(std::chrono::seconds(3));
 
     // Start the instance (We must provide the main window title, never include versions from now on)
-    // auto CanContinue = Instance::BeginSingleInstance("Greyhound");
+    // auto CanContinue = Instance::BeginSingleInstance("Mako");
 
     // Only resume if we can
     // if (CanContinue)
     {
         // Load settings, specify default
-        SettingsManager::LoadSettings("greyhound",
+        SettingsManager::LoadSettings("Mako",
         {
             { "exportimg", "PNG" },
             { "exportsnd", "WAV" },
@@ -231,13 +231,13 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
         // Clean up files
         CleanupFilesystem();
         // Check for updates
-        WraithUpdate::CheckForUpdates("Scobalula", "Greyhound", "Greyhound", "greyhound.exe");
+        WraithUpdate::CheckForUpdates("Scobalula", "Mako", "Mako", "Mako.exe");
 
         // Initialize the API (This must be done BEFORE running a WraithApp)
         if (!WraithX::InitializeAPI(true))
         {
             // Failed to initialize
-            MessageBoxA(NULL, "A fatal error occured while initializing Greyhound", "Greyhound", MB_OK | MB_ICONEXCLAMATION);
+            MessageBoxA(NULL, "A fatal error occured while initializing Mako", "Mako", MB_OK | MB_ICONEXCLAMATION);
             // Failed
             return -1;
         }

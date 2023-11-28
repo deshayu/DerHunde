@@ -1,5 +1,5 @@
 ﻿// ------------------------------------------------------------------------------
-// Primitive Updater for apps released on Github - Made for Greyhound - by Scobalula
+// Primitive Updater for apps released on Github - Made for Mako - by Scobalula
 // Copyright(c) 2018 Scobalula/Philip
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +33,7 @@ using Octokit;
 using System.Globalization;
 using System.Security.Policy;
 
-namespace GreyhoundUpdater
+namespace makoUpdater
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -198,7 +198,7 @@ namespace GreyhoundUpdater
             }
             finally
             {
-                // Try launch Greyhound again
+                // Try launch Mako again
                 try
                 {
                     Process.Start(Path.Combine(ApplicationDirectory, AssemblyName));
@@ -321,7 +321,7 @@ namespace GreyhoundUpdater
             if (args.Length >= 8)
                 PackageIndexRepoName = args[6];
             else
-                PackageIndexRepoName = "GreyhoundPackageIndex";
+                PackageIndexRepoName = "makoPackageIndex";
             // Got it
             return true;
         }
@@ -351,9 +351,9 @@ namespace GreyhoundUpdater
                 DownloadNow.Visibility = Visibility.Hidden;
                 Cancel.Visibility = Visibility.Hidden;
                 ProgressGrid.Visibility = Visibility.Visible;
-                // Get Processes matching Greyhound
+                // Get Processes matching Mako
                 Process[] processes = Process.GetProcessesByName(AssemblyName.Split('.')[0]);
-                // Loop and Kill any instances of Greyhound
+                // Loop and Kill any instances of Mako
                 foreach (var process in processes)
                     process.Kill();
                 // Check mode
@@ -419,7 +419,7 @@ namespace GreyhoundUpdater
         }
 
         /// <summary>
-        /// Extracts and relaunches Greyhound on Download complete
+        /// Extracts and relaunches Mako on Download complete
         /// </summary>
         private void DownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
@@ -433,7 +433,7 @@ namespace GreyhoundUpdater
         }
 
         /// <summary>
-        /// Finalizes the Update by Unpacking the assets and relaunching Greyhound
+        /// Finalizes the Update by Unpacking the assets and relaunching Mako
         /// </summary>
         private void FinalizeUpdate()
         {
@@ -473,7 +473,7 @@ namespace GreyhoundUpdater
                 MessageBox.Show("Update failed. Could not find Update.zip.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }
-            // Try launch Greyhound again
+            // Try launch Mako again
             try
             {
                 Process.Start(Path.Combine(ApplicationDirectory, AssemblyName));
@@ -504,7 +504,7 @@ namespace GreyhoundUpdater
         }
 
         /// <summary>
-        /// Delays exit to give time for Greyhound to start
+        /// Delays exit to give time for Mako to start
         /// </summary>
         private void DelayExit()
         {

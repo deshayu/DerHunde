@@ -177,7 +177,7 @@ void WriteFBXHeaderExtension(BinaryWriter& Writer)
     //WriteElemSingleByteArray(Writer, "FileId", (uint8_t*)&FBXFileID, sizeof(FBXFileID));
     //WriteElemSingleString(Writer, "CreationTime", "1970-01-01 10:00:00:000");
     //// Output Createor
-    //WriteElemSingleString(Writer, "Creator", "Exported via Greyhound");
+    //WriteElemSingleString(Writer, "Creator", "Exported via Mako");
     //// Output Global Settings
     //WriteElemHeader(Writer, "GlobalSettings", (uint32_t)(Writer.GetPosition() + 587), 0, 0);
     //WriteElemSingleInt32(Writer, "Version", 1000);

@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GreyhoundUpdater")]
-[assembly: AssemblyDescription("Updater for Greyhound")]
+[assembly: AssemblyTitle("makoUpdater")]
+[assembly: AssemblyDescription("Updater for Mako")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Philip / Scobalula")]
-[assembly: AssemblyProduct("GreyhoundUpdater")]
+[assembly: AssemblyProduct("makoUpdater")]
 [assembly: AssemblyCopyright("Copyright © Philip / Scobalula 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

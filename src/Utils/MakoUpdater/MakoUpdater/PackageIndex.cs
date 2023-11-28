@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using LZ4;
 
-namespace GreyhoundUpdater
+namespace makoUpdater
 {
     /// <summary>
-    /// A class to handle Greyhound/Wraith Package Index Files
+    /// A class to handle Mako/Wraith Package Index Files
     /// </summary>
     class PackageIndex
     {
