@@ -138,9 +138,6 @@
     <ClCompile Include="GDTSettings.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="CoDGDTProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="XPAKSupport.cpp">
       <Filter>Source Files\Packages</Filter>
     </ClCompile>
@@ -253,6 +250,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CoDXModelMeshHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDGDTProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoDGDTProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -513,5 +516,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

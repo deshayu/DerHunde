@@ -44,6 +44,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>Mako</TargetName>
     <LibraryPath>..\..\External\CascLib\bin\CascLib\x64\ReleaseUD;$(LibraryPath)</LibraryPath>
+    <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -104,6 +105,7 @@
     <ClCompile Include="CoDCDNDownloaderV0.cpp" />
     <ClCompile Include="CoDCDNDownloaderV1.cpp" />
     <ClCompile Include="CoDCDNDownloaderV2.cpp" />
+    <ClCompile Include="CoDGDTProcessor.cpp" />
     <ClCompile Include="CoDIWITranslator.cpp" />
     <ClCompile Include="CoDPackageCache.cpp" />
     <ClCompile Include="CoDQTangent.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="CoDCDNDownloaderV0.h" />
     <ClInclude Include="CoDCDNDownloaderV1.h" />
     <ClInclude Include="CoDCDNDownloaderV2.h" />
+    <ClInclude Include="CoDGDTProcessor.h" />
     <ClInclude Include="CoDIWITranslator.h" />
     <ClInclude Include="CoDPackageCache.h" />
     <ClInclude Include="CoDQTangent.h" />
@@ -257,8 +260,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\spdlog.native.1.0.0\build\native\spdlog.native.targets" Condition="Exists('..\packages\spdlog.native.1.0.0\build\native\spdlog.native.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\spdlog.native.1.0.0\build\native\spdlog.native.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\spdlog.native.1.0.0\build\native\spdlog.native.targets'))" />
+  </Target>
 </Project>

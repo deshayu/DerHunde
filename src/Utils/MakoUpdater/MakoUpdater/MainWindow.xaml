@@ -23,7 +23,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Label x:Name="TitleLabel" Content="mako Update" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="234" Height="72" VerticalAlignment="Top" FontSize="22" Margin="20,0,0,0" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+        <Label x:Name="TitleLabel" Content="Mako Update" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="234" Height="72" VerticalAlignment="Top" FontSize="22" Margin="20,0,0,0" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
 
         <Grid x:Name="ChangelogGrid" Margin="0,72">
             <TextBox x:Name="Changes"  Margin="10" TextWrapping="Wrap" Text="Changes:&#x0a;&#x0a;" Foreground="White" Background="#FF2E2E2E" BorderBrush="#FF666666"/>
@@ -33,7 +33,7 @@
         <Label x:Name="LatestVersion" Content="Update 0.0.0.0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Height="72" VerticalAlignment="Top" FontSize="16" Margin="0,0,20,0" FontFamily="Calibri" FontWeight="Bold" Foreground="#FFA0A0A0" HorizontalAlignment="Right" Width="234"/>
         <Grid x:Name="ProgressGrid" Margin="0,72" Visibility="Hidden">
             <ProgressBar x:Name="Progress" Margin="10,146" Background="{x:Null}" Value="0" BorderBrush="#FF666666" Foreground="#FF666666"/>
-            <Label x:Name="ProgressInfo" Content="Updating mako...." HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="18" Margin="10,108,10,179" FontFamily="Calibri" Foreground="White"/>
+            <Label x:Name="ProgressInfo" Content="Updating Mako...." HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="18" Margin="10,108,10,179" FontFamily="Calibri" Foreground="White"/>
         </Grid>
 
 

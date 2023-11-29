@@ -212,7 +212,6 @@ void SettingsWindow::OnSoundsPage()
 
     this->SetUnselected();
     this->SoundButton.SetSelectedState(true);
-    }
 }
 
 void SettingsWindow::OnGDTPage()
@@ -237,5 +236,4 @@ void SettingsWindow::OnGDTPage()
 
     this->SetUnselected();
     this->GDTButton.SetSelectedState(true);
-
 }

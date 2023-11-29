@@ -480,6 +480,7 @@ const std::vector<CoDGameProcess> CoDAssets::GameProcessInfo =
     { "blackopsmp.exe", SupportedGames::BlackOps, SupportedGameFlags::MP },
     // Black Ops 2
     { "t6zm.exe", SupportedGames::BlackOps2, SupportedGameFlags::ZM },
+    { "plutonium-bootstrapper-win32.exe", SupportedGames::BlackOps2, SupportedGameFlags::ZM},
     { "t6mp.exe", SupportedGames::BlackOps2, SupportedGameFlags::MP },
     { "t6sp.exe", SupportedGames::BlackOps2, SupportedGameFlags::SP },
     // Black Ops 3
