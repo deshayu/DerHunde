@@ -514,6 +514,7 @@ const std::vector<CoDGameProcess> CoDAssets::GameProcessInfo =
     { "s1-mod.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::SP },
     { "s1_mp64_ship.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::MP },
     { "s1-mod.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::MP },
+    { "s1x.exe", SupportedGames::AdvancedWarfare, SupportedGameFlags::MP },
     // Modern Warfare Remastered
     { "h1_sp64_ship.exe", SupportedGames::ModernWarfareRemastered, SupportedGameFlags::SP },
     { "h1-mod.exe", SupportedGames::ModernWarfareRemastered, SupportedGameFlags::SP },
