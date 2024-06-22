@@ -167,10 +167,8 @@ bool GameGhosts::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[0];
 
-        // Store the placeholder anim
-        GhostsXAnim PlaceholderAnim;
-        // Clear it out
-        std::memset(&PlaceholderAnim, 0, sizeof(PlaceholderAnim));
+        // Store the placeholder anim (Zero Initialization)
+        GhostsXAnim PlaceholderAnim = {};
 
         // Loop and read
         for (uint32_t i = 0; i < AnimationCount; i++)
@@ -248,10 +246,8 @@ bool GameGhosts::LoadAssets()
             // Store original offset
             auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[1 + i];
 
-            // Store the placeholder model
-            GhostsXModel PlaceholderModel;
-            // Clear it out
-            std::memset(&PlaceholderModel, 0, sizeof(PlaceholderModel));
+            // Store the placeholder model (Zero Initialization)
+            GhostsXModel PlaceholderModel = {};
 
             // Loop and read
             for (uint32_t i = 0; i < ModelCount; i++)
@@ -704,7 +700,7 @@ std::unique_ptr<XImageDDS> GameGhosts::ReadXImage(const CoDImage_t* Image)
     // Proxy the image off, determine type if need be
     auto Usage = (Image->Format == 84) ? ImageUsageType::NormalMap : ImageUsageType::DiffuseMap;
     // Proxy off
-    return LoadXImage(XImage_t(Usage, 0, 0, 0, Image->AssetPointer, Image->AssetName));
+    return LoadXImage(XImage_t(Usage, 0, Image->AssetPointer, Image->AssetName));
 }
 
 const XMaterial_t GameGhosts::ReadXMaterial(uint64_t MaterialPointer)
@@ -742,7 +738,7 @@ const XMaterial_t GameGhosts::ReadXMaterial(uint64_t MaterialPointer)
         }
 
         // Assign the new image
-        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.NameStart, ImageInfo.NameEnd, ImageInfo.ImagePtr, ImageName);
+        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.ImagePtr, ImageName);
 
         // Advance
         MaterialData.ImageTablePtr += sizeof(GhostsXMaterialImage);

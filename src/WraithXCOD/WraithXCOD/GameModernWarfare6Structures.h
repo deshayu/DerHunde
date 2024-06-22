@@ -80,7 +80,7 @@ struct MW6XModelSurface
     uint16_t PackedIndexTableCount;
     uint8_t PaddingFuck[12];
     uint8_t VertListCount;
-    uint8_t MarvVC[5];
+    uint8_t Unk123[5];
     uint32_t VertexCount;
     uint32_t FacesCount;
     uint32_t UnkValue;
@@ -249,7 +249,7 @@ struct MW6XMaterial
     uint64_t Hash;
     uint8_t Padding[16];
     uint8_t ImageCount;
-    uint8_t Padding2[15];
+    uint8_t Padding2[7];
     uint64_t TechsetPtr;
     uint64_t ImageTablePtr;
     uint8_t Padding3[56];
@@ -260,13 +260,12 @@ struct MW6XMaterial
 struct MW6XMaterialSP
 {
     uint64_t Hash;
-    uint64_t NamePtr;
     uint8_t Padding[16];
     uint8_t ImageCount;
     uint8_t Padding2[15];
     uint64_t TechsetPtr;
     uint64_t ImageTablePtr;
-    uint8_t Padding3[32];
+    uint8_t Padding3[56];
 };
 #pragma pack(pop)
 

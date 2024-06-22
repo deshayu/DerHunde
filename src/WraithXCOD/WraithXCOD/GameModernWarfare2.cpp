@@ -129,10 +129,8 @@ bool GameModernWarfare2::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[0];
 
-        // Store the placeholder anim
-        MW2XAnim PlaceholderAnim;
-        // Clear it out
-        std::memset(&PlaceholderAnim, 0, sizeof(PlaceholderAnim));
+        // Store the placeholder anim (Zero Initialization)
+        MW2XAnim PlaceholderAnim = {};
 
         // Loop and read
         for (uint32_t i = 0; i < AnimationCount; i++)
@@ -198,10 +196,8 @@ bool GameModernWarfare2::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[1];
 
-        // Store the placeholder model
-        MW2XModel PlaceholderModel;
-        // Clear it out
-        std::memset(&PlaceholderModel, 0, sizeof(PlaceholderModel));
+        // Store the placeholder model (Zero Initialization)
+        MW2XModel PlaceholderModel = {};
 
         // Loop and read
         for (uint32_t i = 0; i < ModelCount; i++)
@@ -516,7 +512,7 @@ const XMaterial_t GameModernWarfare2::ReadXMaterial(uint64_t MaterialPointer)
         }
 
         // Assign the new image
-        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.NameStart, ImageInfo.NameEnd, ImageInfo.ImagePtr, ImageName);
+        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.ImagePtr, ImageName);
 
         // Advance
         MaterialData.ImageTablePtr += sizeof(MW2XMaterialImage);

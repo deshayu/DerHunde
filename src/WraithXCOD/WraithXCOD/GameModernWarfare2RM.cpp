@@ -237,10 +237,8 @@ bool GameModernWarfare2RM::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[0];
 
-        // Store the placeholder anim
-        MWRXAnim PlaceholderAnim;
-        // Clear it out
-        std::memset(&PlaceholderAnim, 0, sizeof(PlaceholderAnim));
+        // Store the placeholder anim (Zero Initialization)
+        MWRXAnim PlaceholderAnim = {};
 
         // Loop and read
         for (uint32_t i = 0; i < AnimationCount; i++)
@@ -306,10 +304,8 @@ bool GameModernWarfare2RM::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[1];
 
-        // Store the placeholder model
-        MW2RXModel PlaceholderModel;
-        // Clear it out
-        std::memset(&PlaceholderModel, 0, sizeof(PlaceholderModel));
+        // Store the placeholder model (Zero Initialization)
+        MW2RXModel PlaceholderModel = {};
 
         // Loop and read
         for (uint32_t i = 0; i < ModelCount; i++)
@@ -391,8 +387,6 @@ bool GameModernWarfare2RM::LoadAssets()
 
             // Validate and load if need be
             auto ImageName = FileSystems::GetFileName(CoDAssets::GameInstance->ReadNullTerminatedString(ImageResult.NamePtr));
-
-
 
             // Check if it's streamed
             if (ImageResult.Streamed > 0)
@@ -998,9 +992,9 @@ std::unique_ptr<XImageDDS> GameModernWarfare2RM::ReadXImage(const CoDImage_t* Im
     }
     // Proxy off
     if (ps::state != nullptr)
-        return LoadXImagePS(XImage_t(Usage, 0, 0, 0, Image->AssetPointer, Image->AssetName));
+        return LoadXImagePS(XImage_t(Usage, 0, Image->AssetPointer, Image->AssetName));
     else
-        return LoadXImage(XImage_t(Usage, 0, 0, 0, Image->AssetPointer, Image->AssetName));
+        return LoadXImage(XImage_t(Usage, 0, Image->AssetPointer, Image->AssetName));
 }
 
 struct XImageData
@@ -1145,7 +1139,7 @@ const XMaterial_t GameModernWarfare2RM::ReadXMaterial(uint64_t MaterialPointer)
         }
 
         // Assign the new image
-        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.NameStart, ImageInfo.NameEnd, ImageInfo.ImagePtr, ImageName);
+        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.ImagePtr, ImageName);
 
         // Advance
         MaterialData.ImageTablePtr += sizeof(MWRXMaterialImage);

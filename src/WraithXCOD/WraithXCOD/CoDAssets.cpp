@@ -527,7 +527,7 @@ const std::vector<CoDGameProcess> CoDAssets::GameProcessInfo =
     { "s2_mp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::MP },
     { "s2_sp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::SP },
     { "s2_mp64_ship.exe", SupportedGames::WorldWar2, SupportedGameFlags::MP },
-    // Modern Warfare 4
+    // Cordycep
     { "Cordycep.CLI.exe", SupportedGames::Parasyte, SupportedGameFlags::SP },
     // Modern Warfare 2 Remastered
     { "mw2cr.exe", SupportedGames::ModernWarfare2Remastered, SupportedGameFlags::SP },
@@ -751,8 +751,8 @@ LoadGameResult CoDAssets::LoadGamePS()
             XAssetLogWriter->Open(FileSystems::CombinePath(FileSystems::GetApplicationPath(), "AssetLog.txt"));
         }
 
-        // Check for CDN support.
-        bool CDNSupport = true; // SettingsManager::GetSetting("cdn_downloader", "false") == "true";
+// Check for CDN support.
+        const bool CDNSupport = SettingsManager::GetSetting("cdn_downloader", "false") == "true";
 
         // Cleanup
         CleanupPackageCache();
@@ -771,7 +771,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             OnDemandCache     = std::make_unique<XPAKCache>();
             CDNDownloader     = CDNSupport ? std::make_unique<CoDCDNDownloaderV0>() : nullptr;
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
-            // OnDemandCache->LoadPackageCacheAsync(FileSystems::CombinePath(ps::state->GameDirectory, "xpak_cache"));
+            OnDemandCache->LoadPackageCacheAsync(FileSystems::CombinePath(ps::state->GameDirectory, "xpak_cache"));
             Success = GameModernWarfare4::LoadAssets();
             break;
         // Vanguard
@@ -845,7 +845,7 @@ LoadGameResult CoDAssets::LoadGamePS()
             GamePackageCache->LoadPackageCacheAsync(ps::state->GameDirectory);
             Success = GameModernWarfare5::LoadAssets();
             break;
-            // Modern Warfare 3 (2023)
+        // Modern Warfare 3 (2023)
         case 0x4B4F4D41594D4159:
             GameModernWarfare6::PerformInitialSetup();
             GameID = SupportedGames::ModernWarfare6;
@@ -1068,22 +1068,37 @@ ExportGameResult CoDAssets::ExportAsset(const CoDAsset_t* Asset)
     // Result
     auto Result = ExportGameResult::Success;
 
-    // Send to specific export handler
-    switch (Asset->AssetType)
+// #ifndef _DEBUG
+    try
     {
-    // Export an animation
-    case WraithAssetType::Animation: Result = ExportAnimationAsset((CoDAnim_t*)Asset, ExportPath); break;
-    // Export a model, combine the name of the model with the export path!
-    case WraithAssetType::Model: Result = ExportModelAsset((CoDModel_t*)Asset, ExportPath, ImagesPath, ImageRelativePath, ImageExtension); break;
-    // Export an image
-    case WraithAssetType::Image: Result = ExportImageAsset((CoDImage_t*)Asset, ExportPath, ImageExtension); break;
-    // Export a sound
-    case WraithAssetType::Sound: Result = ExportSoundAsset((CoDSound_t*)Asset, ExportPath, CoDAssets::GameID == SupportedGames::WorldAtWar ? ".wav" : SoundExtension); break;
-    // Export a rawfile
-    case WraithAssetType::RawFile: Result = ExportRawfileAsset((CoDRawFile_t*)Asset, ExportPath); break;
-    // Export a material
-    case WraithAssetType::Material: Result = ExportMaterialAsset((CoDMaterial_t*)Asset, ExportPath, ImagesPath, ImageRelativePath, ImageExtension); break;
+// #endif
+        // Send to specific export handler
+        switch (Asset->AssetType)
+        {
+            // Export an animation
+            case WraithAssetType::Animation: {Result = ExportAnimationAsset((CoDAnim_t*)Asset, ExportPath); break;}
+            // Export a model, combine the name of the model with the export path!
+            case WraithAssetType::Model: {Result = ExportModelAsset((CoDModel_t*)Asset, ExportPath, ImagesPath, ImageRelativePath, ImageExtension); break;}
+            // Export an image
+            case WraithAssetType::Image: {Result = ExportImageAsset((CoDImage_t*)Asset, ExportPath, ImageExtension); break;}
+            // Export a sound
+            case WraithAssetType::Sound: {Result = ExportSoundAsset((CoDSound_t*)Asset, ExportPath, CoDAssets::GameID == SupportedGames::WorldAtWar ? ".wav" : SoundExtension); break;}
+            // Export a rawfile
+            case WraithAssetType::RawFile: {Result = ExportRawfileAsset((CoDRawFile_t*)Asset, ExportPath); break;}
+            // Export a material
+            case WraithAssetType::Material: {Result = ExportMaterialAsset((CoDMaterial_t*)Asset, ExportPath, ImagesPath, ImageRelativePath, ImageExtension); break;}
+        }
+// #ifndef _DEBUG
     }
+    catch (...)
+    {
+        Result = ExportGameResult::UnknownError;
+        CoDAssets::Log->error("An exception occurred while exporting asset: {0}", Asset->AssetName);
+#if _DEBUG
+		std::cout << "Error: An exception occurred while exporting asset:" << Asset->AssetName.c_str() << "\n";
+#endif // _DEBUG
+    }
+// #endif
 
     // Success, unless specific error
     return Result;
@@ -1359,8 +1374,8 @@ bool CoDAssets::LocateGameInfo()
         GamePackageCache->LoadPackageCacheAsync(FileSystems::GetDirectoryName(GameInstance->GetProcessPath()));
         break;
     case SupportedGames::Parasyte:
-        // Locate IW8 Database
-        auto DBFile = FileSystems::CombinePath(FileSystems::GetDirectoryName(CoDAssets::GameInstance->GetProcessPath()), "Data\\CurrentHandler.csi");
+        // Locate Parasyte Current Handler Database
+        const auto DBFile = FileSystems::CombinePath(FileSystems::GetDirectoryName(CoDAssets::GameInstance->GetProcessPath()), "Data\\CurrentHandler.csi");
         Success = FileSystems::FileExists(DBFile);
         // Validate
         if (Success)
@@ -1376,7 +1391,7 @@ bool CoDAssets::LocateGameInfo()
     GameGDTProcessor->SetupProcessor(GDTShorthand);
 
     // Validate the results, every game should have at least 1 offset and 1 size, and success must be true
-    if (Success && (GameOffsetInfos.size() > 0 && GamePoolSizes.size() > 0))
+    if (Success && !GameOffsetInfos.empty() && !GamePoolSizes.empty())
     {
         // We succeeded
         return true;
@@ -1638,6 +1653,9 @@ bool CoDAssets::ShouldExportModel(std::string ExportPath)
     if (SettingsManager::GetSetting("export_gltf") == "true" && !FileSystems::FileExists(ExportPath + ".gltf"))
         Result = true;
     // Check it
+    if (SettingsManager::GetSetting("export_glb") == "true" && !FileSystems::FileExists(ExportPath + ".glb"))
+        Result = true;
+    // Check it
     if (SettingsManager::GetSetting("export_castmdl") == "true" && !FileSystems::FileExists(ExportPath + ".cast"))
         Result = true;
     //// Check it
@@ -1763,19 +1781,28 @@ ExportGameResult CoDAssets::ExportModelAsset(const CoDModel_t* Model, const std:
         else
         {
             // We should export the biggest we can find
-            auto BiggestLodIndex = CoDXModelTranslator::CalculateBiggestLodIndex(GenericModel);
+            const auto BiggestLodIndex = CoDXModelTranslator::CalculateBiggestLodIndex(GenericModel);
 
             // If the biggest > -1 translate
             if (BiggestLodIndex > -1)
             {
+                // Default lod index suffix using 0
+                std::string LodIndexSuffix = "_LOD0";
+
+                // If we are using the "match game lod index" setting
+                if (SettingsManager::GetSetting("match_game_lod_index", "false") == "true")
+                {
+                    LodIndexSuffix = Strings::Format("_LOD%d", BiggestLodIndex);
+                }
+
                 // Check if we should not export this model (files already exist)
-                if (ShouldExportModel(FileSystems::CombinePath(ExportPath, Model->AssetName + "_LOD0")))
+                if (ShouldExportModel(FileSystems::CombinePath(ExportPath, Model->AssetName + LodIndexSuffix)))
                 {
                     // Translate generic model to a WraithModel, then export
-                    auto Result = CoDXModelTranslator::TranslateXModel(GenericModel, BiggestLodIndex);
+                    const auto Result = CoDXModelTranslator::TranslateXModel(GenericModel, BiggestLodIndex);
 
-                    // Apply lod name (_LOD0)
-                    Result->AssetName += "";
+                    // Apply lod name (_LODx)
+                    Result->AssetName += LodIndexSuffix;
 
                     // Check result and export
                     if (Result != nullptr)
@@ -2203,8 +2230,14 @@ void CoDAssets::ExportWraithModel(const std::unique_ptr<WraithModel>& Model, con
     // Check for GLTF format
     if (SettingsManager::GetSetting("export_gltf") == "true")
     {
-        // Export a SEModel file
+        // Export a GLTF file
         GLTF::ExportGLTF(*Model.get(), FileSystems::CombinePath(ExportPath, Model->AssetName + ".gltf"));
+    }
+    // Check for GLB format
+    if (SettingsManager::GetSetting("export_glb") == "true")
+    {
+        // Export a GLB file
+        GLTF::ExportGLTF(*Model.get(), FileSystems::CombinePath(ExportPath, Model->AssetName + ".glb"), false, true);
     }
     // Check for SEModel format
     if (SettingsManager::GetSetting("export_semodel") == "true")
@@ -2224,7 +2257,7 @@ void CoDAssets::ExportWraithModel(const std::unique_ptr<WraithModel>& Model, con
         // Export an FBX file
         // FBX::ExportFBX(*Model.get(), FileSystems::CombinePath(ExportPath, Model->AssetName + ".fbx"));
     }
-// Prepare GDT info
+    // Prepare GDT info
     CoDAssets::GameGDTProcessor->ProcessModelGDT(Model);
 }
 
@@ -2334,14 +2367,7 @@ void CoDAssets::ExportMaterialImageNames(const XMaterial_t& Material, const std:
             }
             else
             {
-                if (Image.FirstCharacter && Image.LastCharacter)
-                {
-                    ImageNames.WriteLineFmt("unk_semantic_0x%X,%i,%i,%s", Image.SemanticHash, Image.FirstCharacter, Image.LastCharacter, Image.ImageName.c_str());
-                }
-                else
-                {
-                    ImageNames.WriteLineFmt("unk_semantic_0x%X,%s", Image.SemanticHash, Image.ImageName.c_str());
-                }
+                ImageNames.WriteLineFmt("unk_semantic_0x%X,%s", Image.SemanticHash, Image.ImageName.c_str());
             }
         }
 

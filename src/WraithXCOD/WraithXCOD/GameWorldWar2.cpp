@@ -200,11 +200,9 @@ bool GameWorldWar2::LoadAssets()
 
     if (NeedsAnims)
     {
-        // Store the placeholder model
-        WWIIXAnim PlaceholderAnim;
-        // Clear it out
-        std::memset(&PlaceholderAnim, 0, sizeof(PlaceholderAnim));
-        
+        // Store the placeholder model (Zero Initialization)
+        WWIIXAnim PlaceholderAnim = {};
+
         // Parse the XAnim pool
         CoDXPoolParser<uint64_t, WWIIXAnim>((CoDAssets::GameOffsetInfos[0] + 8), CoDAssets::GamePoolSizes[0], [&PlaceholderAnim](WWIIXAnim& Asset, uint64_t& AssetOffset)
         {
@@ -247,10 +245,8 @@ bool GameWorldWar2::LoadAssets()
 
     if (NeedsModels)
     {
-        // Store the placeholder model
-        WWIIXModel PlaceholderModel;
-        // Clear it out
-        std::memset(&PlaceholderModel, 0, sizeof(PlaceholderModel));
+        // Store the placeholder model (Zero Initialization)
+        WWIIXModel PlaceholderModel = {};
 
         // Parse the XModel pool
         CoDXPoolParser<uint64_t, WWIIXModelBase>((CoDAssets::GameOffsetInfos[1] + 8), CoDAssets::GamePoolSizes[1], [&PlaceholderModel](WWIIXModelBase& Asset, uint64_t& AssetOffset)
@@ -629,7 +625,7 @@ std::unique_ptr<XImageDDS> GameWorldWar2::ReadXImage(const CoDImage_t* Image)
         Usage = ImageUsageType::NormalMap;
     }
     // Proxy off
-    return LoadXImage(XImage_t(Usage, 0, 0, 0, Image->AssetPointer, Image->AssetName));
+    return LoadXImage(XImage_t(Usage, 0, Image->AssetPointer, Image->AssetName));
 }
 
 std::unique_ptr<XSound> GameWorldWar2::ReadXSound(const CoDSound_t* Sound)
@@ -865,7 +861,7 @@ const XMaterial_t GameWorldWar2::ReadXMaterial(uint64_t MaterialPointer)
         }
 
         // Assign the new image
-        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.NameStart, ImageInfo.NameEnd, ImageInfo.ImagePtr, ImageName);
+        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.ImagePtr, ImageName);
 
         // Advance
         MaterialData.ImageTablePtr += sizeof(WWIIXMaterialImage);
@@ -1172,7 +1168,7 @@ void GameWorldWar2::LoadXModel(const std::unique_ptr<XModel_t>& Model, const XMo
             auto ToRead = (size_t)Info.VertexCount * 20;
             // Init a read for this individual buffer.
             MemoryReader ShapeVertsReader(CoDAssets::GameInstance->Read(Info.DataPtr1, ToRead, SizeRead), ToRead, false);
-            // Verify we read marv.
+            // Verify we read.
             if (SizeRead != ToRead)
             {
                 continue;

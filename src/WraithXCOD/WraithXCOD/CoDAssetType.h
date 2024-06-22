@@ -270,17 +270,13 @@ enum class ImageUsageType : uint8_t
 struct XImage_t
 {
     // Constructor
-    XImage_t(ImageUsageType Usage, uint32_t Hash, uint32_t First, uint32_t Last, uint64_t Pointer, const std::string& Name);
-
+    XImage_t(ImageUsageType Usage, uint32_t Hash, uint64_t Pointer, const std::string& Name);
     // The usage of this image asset
     ImageUsageType ImageUsage;
     // The pointer to the image asset
     uint64_t ImagePtr;
 
     uint32_t SemanticHash;
-
-    uint32_t FirstCharacter;
-    uint32_t LastCharacter;
 
     // The name of this image asset
     std::string ImageName;

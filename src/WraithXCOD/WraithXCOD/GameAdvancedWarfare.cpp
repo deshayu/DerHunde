@@ -161,10 +161,8 @@ bool GameAdvancedWarfare::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[0];
 
-        // Store the placeholder anim
-        AWXAnim PlaceholderAnim;
-        // Clear it out
-        std::memset(&PlaceholderAnim, 0, sizeof(PlaceholderAnim));
+        // Store the placeholder anim (Zero Initialization)
+        AWXAnim PlaceholderAnim = {};
 
         // Loop and read
         for (uint32_t i = 0; i < AnimationCount; i++)
@@ -232,10 +230,8 @@ bool GameAdvancedWarfare::LoadAssets()
         // Store original offset
         auto MinimumPoolOffset = CoDAssets::GameOffsetInfos[1];
 
-        // Store the placeholder model
-        AWXModel PlaceholderModel;
-        // Clear it out
-        std::memset(&PlaceholderModel, 0, sizeof(PlaceholderModel));
+        // Store the placeholder model (Zero Initialization)
+        AWXModel PlaceholderModel = {};
 
         // Loop and read
         for (uint32_t i = 0; i < ModelCount; i++)
@@ -943,7 +939,7 @@ std::unique_ptr<XImageDDS> GameAdvancedWarfare::ReadXImage(const CoDImage_t* Ima
     // Proxy the image off, determine type if need be
     auto Usage = (Image->Format == 84) ? ImageUsageType::NormalMap : ImageUsageType::DiffuseMap;
     // Proxy off
-    return LoadXImage(XImage_t(Usage, 0, 0, 0, Image->AssetPointer, Image->AssetName));
+    return LoadXImage(XImage_t(Usage, 0, Image->AssetPointer, Image->AssetName));
 }
 
 const XMaterial_t GameAdvancedWarfare::ReadXMaterial(uint64_t MaterialPointer)
@@ -981,7 +977,7 @@ const XMaterial_t GameAdvancedWarfare::ReadXMaterial(uint64_t MaterialPointer)
         }
 
         // Assign the new image
-        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.NameStart, ImageInfo.NameEnd, ImageInfo.ImagePtr, ImageName);
+        Result.Images.emplace_back(DefaultUsage, ImageInfo.SemanticHash, ImageInfo.ImagePtr, ImageName);
 
         // Advance
         MaterialData.ImageTablePtr += sizeof(AWXMaterialImage);
